@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EGN Validator</title>
+
+    <script>
+        function egninfo(){
+            var egn = document.getElementById("egn").value;
+            if (checkegn(egn)){
+                document.getElementById("info").innerHTML = egn + " is valid."
+                document.getElementById("info").style = "color:green";
+            }
+            else{
+                document.getElementById("info").innerHTML = egn + " is invalid."
+                document.getElementById("info").style = "color:red";
+            }
+        }
+
+        function checkegn(egn){
+            if (egn.length != 10){
+                return false;
+            }
+            for (var i = 0; i < egn.length; i++){
+                if (egn[i] < '0' || egn[i] > '9'){
+                    return false;
+                }
+                return true;
+            }
+            var checksum = 0;
+            var weights = [2, 4, 8, 5, 10, 9, 7, 3, 6]
+            for (var i = 0; i < 9; i++){
+                checksum += (egn[i] - '0') * weights[i];
+            }
+            checksum % 11;
+            if (checksum == 10){
+                checksum = 0;
+            }
+            console.log(checksum);
+            if (checksum != (egn[9] - '0')){
+                return false;
+            }
+            return true;
+        }
+
+        function clr(){
+            document.getElementById("egn").value = "";
+            document.getElementById("info").innerHTML = "";
+        }
+
+    </script>
+</head>
+<body>
+    <input type="text" id="egn"> <br>
+    <button onclick="egninfo()">Check</button>
+    <button onclick="clr()">Clear</button>
+    <p id="info" style=""></p>
+</body>
+</html>
